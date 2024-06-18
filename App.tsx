@@ -6,6 +6,7 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 import CardListScreen from './screens/CardListScreen';
 import AddCardScreen from './screens/AddCardScreen';
 import { Ionicons } from '@expo/vector-icons';
+import { AuthProvider } from './context/AuthContext';
 
 
 type RootStackParamList = {
@@ -69,13 +70,15 @@ const screenOptions = ({ route }: { route: RouteProp<RootStackParamList, keyof R
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Cards" screenOptions={(route) => {
-        return screenOptions(route)
-      }}>
-        <Stack.Screen name="Cards" component={CardListScreen} options={{ title: 'Cards' }} />
-        <Stack.Screen name="AddCard" component={AddCardScreen} options={{ title: 'Add Card' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Cards" screenOptions={(route) => {
+          return screenOptions(route)
+        }}>
+          <Stack.Screen name="Cards" component={CardListScreen} options={{ title: 'Cards' }} />
+          <Stack.Screen name="AddCard" component={AddCardScreen} options={{ title: 'Add Card' }} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

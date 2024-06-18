@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Card } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '../components/Button';
 import CardListContainer from '../containers/CardListContainer';
+import { AuthContext } from '../context/AuthContext';
 
 type RootStackParamList = {
     CardList: undefined;
@@ -30,6 +31,8 @@ const CardListScreen: React.FC<Props> = ({ navigation }) => {
             "name": "Card Holder Name",
         }
     ]);
+    const authContext = useContext(AuthContext)
+    console.log("xxx authContext ", authContext)
 
     useEffect(() => {
         const loadCards = async () => {
