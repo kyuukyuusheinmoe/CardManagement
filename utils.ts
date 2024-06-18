@@ -1,14 +1,13 @@
-export function formatCardNumber(lastFourDigits: string) {
-    // Split the card number into parts for formatting
-    const firstPart = Array(12).fill(".").join("") // First 12 digits
+const CARD_NUMBER_PREFIX = "."
+const CARD_PREFIX_LENGTH = 12;
+const CARD_PREFIX_BREAK = 4;
 
-    // Create a string with dots and spaces for the first 12 digits
-    let formattedCardNumber = firstPart.replace(/.{4}/g, (match, index) => {
-        return index === 0 ? match : '    ' + match;
-    });
 
-    // Append the last four digits
-    formattedCardNumber += ' ' + lastFourDigits;
+export function formatCardPrefix() {
+    let formattedCardNumber = "";
+    for (let i = 0; i < CARD_PREFIX_LENGTH; i++) {
+        formattedCardNumber = formattedCardNumber + `${(i + 1) % CARD_PREFIX_BREAK == 0 ? CARD_NUMBER_PREFIX + "    " : CARD_NUMBER_PREFIX}`
+    }
 
     return formattedCardNumber;
 }
