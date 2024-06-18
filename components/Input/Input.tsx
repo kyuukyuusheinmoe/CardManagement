@@ -5,21 +5,19 @@ import { View, Text, TextInput, StyleSheet } from 'react-native';
 interface InputProps {
     name: string,
     label: string,
-    placeholder?: string
+    placeholder?: string,
+    width?: number
 }
 
-const Input = ({ label, placeholder }: InputProps) => {
+const Input = ({ label, placeholder, width }: InputProps) => {
     const [cardNumber, setCardNumber] = useState('');
 
-    return (<View><Text style={styles.label}>{label}</Text>
+    return (<View>
+        <Text style={styles.label}>{label}</Text>
         <TextInput style={styles.input} value={cardNumber} onChangeText={setCardNumber} placeholder={placeholder} /></View>)
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
     label: {
         fontWeight: "bold"
     },

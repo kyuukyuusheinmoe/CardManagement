@@ -1,6 +1,6 @@
 // screens/AddCardScreen.tsx
 import React, { useState } from 'react';
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet, DimensionValue } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Card } from '../types';
@@ -8,6 +8,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
 import { AddCardComponents } from '../constant/Card';
 import Input from '../components/Input';
+import Button from '../components/Button';
 
 type RootStackParamList = {
     CardList: undefined;
@@ -47,8 +48,10 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            {AddCardComponents.map(component => <Input {...component} />)}
-            <Button title="Save Card" onPress={saveCard} />
+            <View style={styles.formContainer}>
+                {AddCardComponents.map((component, index) => <View key={index} style={[styles.inputWrapper, { flexBasis: component.width as DimensionValue || '100%', }]}><Input {...component} /></View >)}
+            </View>
+            <Button title="Add Card" onPress={() => navigation.navigate('AddCard')} style={styles.button} />
         </View>
     );
 };
@@ -57,14 +60,21 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        backgroundColor: "#fff"
     },
-    input: {
-        borderWidth: 1.5,
-        borderColor: '#E6E3E6',
-        padding: 10,
-        marginVertical: 8,
-        borderRadius: 5,
+    formContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
     },
+    inputWrapper: {
+        paddingHorizontal: 8,
+        flexGrow: 1,
+        marginBottom: 15,
+    },
+    button: {
+        borderRadius: 15,
+        backgroundColor: "#4AD8DA",
+    }
 });
 
 export default AddCardScreen;

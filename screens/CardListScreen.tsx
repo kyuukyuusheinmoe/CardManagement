@@ -1,9 +1,10 @@
 // screens/CardListScreen.tsx
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Card } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Button from '../components/Button';
 
 type RootStackParamList = {
     CardList: undefined;
@@ -50,7 +51,7 @@ const CardListScreen: React.FC<Props> = ({ navigation }) => {
                 <Text>
                     We recommend adding a cardfor easy payment
                 </Text>
-                <Button title="Add New Card" onPress={() => navigation.navigate('AddCard')} />
+                    <Button title="Add New Card" onPress={() => navigation.navigate('AddCard')} textStyle={{ color: "#4AD8DA" }} />
             </View>}
         </View>
     );
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        backgroundColor: "#fff"
     },
     emptyContainer: {
         flex: 1,
