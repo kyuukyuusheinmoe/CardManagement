@@ -6,10 +6,9 @@ interface InputProps {
     name: string,
     label: string,
     placeholder?: string,
-    width?: number
 }
 
-const Input = ({ label, placeholder, width }: InputProps) => {
+const Input = ({ label, placeholder }: InputProps) => {
     const [cardNumber, setCardNumber] = useState('');
 
     return (<View>

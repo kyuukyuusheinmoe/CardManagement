@@ -1,4 +1,3 @@
-// screens/AddCardScreen.tsx
 import React, { useState } from 'react';
 import { View, StyleSheet, DimensionValue } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AddCardComponents } from '../constant/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import ImageComponent from '../components/Image';
 
 type RootStackParamList = {
     CardList: undefined;
@@ -51,6 +51,10 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
             <View style={styles.formContainer}>
                 {AddCardComponents.map((component, index) => <View key={index} style={[styles.inputWrapper, { flexBasis: component.width as DimensionValue || '100%', }]}><Input {...component} /></View >)}
             </View>
+            <View style={styles.imagesContainer}>
+                {[require("../assets/verified-by-visa.png"), require("../assets/mastercard-securecode-grey.png"), require("../assets/omise-grey.png"),].map((img, index) => <ImageComponent imageSource={img} key={index} imageStyle={styles.image
+                } />)}
+            </View>
             <Button title="Add Card" onPress={() => navigation.navigate('AddCard')} style={styles.button} />
         </View>
     );
@@ -71,8 +75,26 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         marginBottom: 15,
     },
+    imagesContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: "center",
+        alignItems: "center",
+        gap: 16,
+        marginVertical: 16
+    },
+    image: {
+        width: 50,
+        height: 25,
+        resizeMode: 'contain',
+    },
     button: {
-        borderRadius: 15,
+        position: "absolute",
+        bottom: 20,
+        left: 20, // Adjust left padding as needed
+        right: 20,
+        flexGrow: 1,
+        borderRadius: 30,
         backgroundColor: "#4AD8DA",
     }
 });
