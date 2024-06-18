@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Card } from '../types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Button from '../components/Button';
+import CardListContainer from '../containers/CardListContainer';
 
 type RootStackParamList = {
     CardList: undefined;
@@ -17,7 +18,18 @@ type Props = {
 };
 
 const CardListScreen: React.FC<Props> = ({ navigation }) => {
-    const [cards, setCards] = useState<Card[]>([]);
+    const [cards, setCards] = useState<Card[]>([
+        {
+            "id": "card_test_5y7g6uc6a44m1z7wy3s",
+            "brand": "Visa",
+            "last_digits": "4242",
+            "expiration_month": 12,
+            "expiration_year": 2024,
+            "country": "US",
+            "fingerprint": "1asdb3d2332f4fg5g",
+            "name": "Card Holder Name",
+        }
+    ]);
 
     useEffect(() => {
         const loadCards = async () => {
@@ -29,20 +41,9 @@ const CardListScreen: React.FC<Props> = ({ navigation }) => {
         loadCards();
     }, []);
 
-    const renderCard = ({ item }: { item: Card }) => (
-        <View style={styles.card}>
-            <Text>{item.name}</Text>
-            <Text>{item.type}</Text>
-        </View>
-    );
-
     return (
         <View style={styles.container}>
-            {cards.length ? <FlatList
-                data={cards}
-                renderItem={renderCard}
-                keyExtractor={(item) => item.id}
-            /> : <View style={styles.emptyContainer}>
+            {cards.length ? <CardListContainer cards={cards} /> : <View style={styles.emptyContainer}>
                 <Text>💳</Text>
                 <Text>
                     No Cards Found
