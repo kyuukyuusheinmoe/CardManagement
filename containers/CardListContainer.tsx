@@ -4,7 +4,10 @@ import ImageComponent from '../components/Image';
 import { Card } from "../types";
 import { formatCardPrefix, getRandomAmount } from "../utils";
 import { chargeCustomer } from "../services/customer";
+import { useState } from "react";
+import Toast from "../components/Toast";
 
+const DEFAULT_CURRENCY = 'thb';
 interface CardListContainerProps {
     cards: Card[]
 }
@@ -24,16 +27,28 @@ const CardNumberComponent = ({ last_digits }: { last_digits: string }) => {
 }
 
 const CardListContainer = ({ cards }: CardListContainerProps) => {
+    const [showToast, setShowToast] = useState(false)
+    const [randomAmount, setRandomAmount] = useState(0)
+
+
     const handlePress = async (event: GestureResponderEvent, card: Card) => {
         console.log("xxx handlePress", card)
+        setRandomAmount(() => getRandomAmount())
+        setShowToast(true)
+
         const data = {
             description: 'some description',
-            amount: getRandomAmount(), // Random amount
-            currency: 'thb',
+            amount: randomAmount, // Random amount
+            currency: DEFAULT_CURRENCY,
             capture: true,
             card: card.id
         }
-        const result = await chargeCustomer(data)
+        //TODO: create charge
+        // const result = await chargeCustomer(data)
+
+    }
+    const hideToast = () => {
+        setShowToast(false)
     }
 
     const renderCard = ({ item }: { item: Card }) => (
@@ -63,11 +78,15 @@ const CardListContainer = ({ cards }: CardListContainerProps) => {
         </CardComponent>
     );
 
-    return (<FlatList
+    return (<View><FlatList
         data={cards}
         renderItem={renderCard}
         keyExtractor={(item) => item.id}
-    />)
+    /><Toast
+            message={`You are paying a random amount ${randomAmount} ${DEFAULT_CURRENCY.toUpperCase()}`}
+            visible={showToast}
+            onClose={hideToast}
+        /></View>)
 }
 
 const styles = StyleSheet.create({
