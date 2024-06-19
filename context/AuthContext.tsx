@@ -1,19 +1,22 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { createCardUser } from "../services/customer";
 import { Card } from "../types";
 
+interface CustomerDataProps {
+    id: string;
+    cards: { data: Card[] }
+}
+
 interface AuthContextProps {
-    customerData: {
-        id: string;
-        cards: Card[]
-    } | null
+    customerData: CustomerDataProps | null,
+    updateCards?: (cards: { data: Card[] }) => void
 }
 
 export const AuthContext = createContext<AuthContextProps>({ customerData: null })
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [customerData, setCustomerData] = useState(null)
+    const [customerData, setCustomerData] = useState<CustomerDataProps | null>(null)
 
     useEffect(() => {
         const createUser = async () => {
@@ -25,5 +28,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         createUser()
     }, [])
 
-    return (<AuthContext.Provider value={{ customerData }}><View>{children}</View></AuthContext.Provider>)
+    const updateCards = (cards: { data: Card[] }) => {
+        console.log("xxx updateCards ", cards)
+        setCustomerData((customerData) => {
+            console.log("xxx setCustomerData ", { ...customerData, cards })
+            return ({ ...customerData, cards })
+        })
+    }
+
+    return (<AuthContext.Provider value={{ customerData, updateCards }}><View style={styles.layout}>{children}</View></AuthContext.Provider>)
 }
+
+const styles = StyleSheet.create({
+    layout: {
+        flex: 1,
+    }
+})

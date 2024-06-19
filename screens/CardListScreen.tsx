@@ -19,15 +19,17 @@ type Props = {
 const CardListScreen: React.FC<Props> = ({ navigation }) => {
     const { customerData } = useContext(AuthContext)
 
+    const cardList = customerData?.cards?.data?.length ? customerData.cards.data : []
+
     return (
         <View style={styles.container}>
-            {customerData?.cards?.length ? <CardListContainer cards={customerData.cards} /> : <View style={styles.emptyContainer}>
+            {cardList.length ? <CardListContainer cards={cardList} /> : <View style={styles.emptyContainer}>
                 <Text>💳</Text>
                 <Text>
                     No Cards Found
                 </Text>
                 <Text>
-                    We recommend adding a cardfor easy payment
+                    We recommend adding a card for easy payment
                 </Text>
                     <Button title="Add New Card" onPress={() => navigation.navigate('AddCard')} textStyle={{ color: "#4AD8DA" }} />
             </View>}

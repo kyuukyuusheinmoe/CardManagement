@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import { View, StyleSheet, DimensionValue } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { Card } from '../types';
-import { v4 as uuidv4 } from 'uuid';
 import { AddCardComponents } from '../constant/Card';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import ImageComponent from '../components/Image';
+import { useForm } from '../hooks/useForm';
+import { createCardToken, updateCardUser } from '../services/customer';
+import { AuthContext } from '../context/AuthContext';
 
 type RootStackParamList = {
     CardList: undefined;
@@ -23,38 +24,41 @@ type Props = {
 };
 
 const AddCardScreen: React.FC<Props> = ({ navigation }) => {
-    const [name, setName] = useState<string>('');
-    const [type, setType] = useState<string>('');
-    const [number, setNumber] = useState<string>('');
-    const [expirationDate, setExpirationDate] = useState<string>('');
+    const { formData, setForm } = useForm();
+    const { customerData, updateCards } = useContext(AuthContext)
 
-    const saveCard = async () => {
-        const newCard: Card = {
-            id: uuidv4(),
-            name,
-            type,
-            number,
-            expirationDate,
-        };
+    const handleFormChange = (name: string, value: string) => {
+        setForm({ [name]: value })
+    }
 
-        const storedCards = await AsyncStorage.getItem('cards');
-        const cards = storedCards ? JSON.parse(storedCards) : [];
-        cards.push(newCard);
-        await AsyncStorage.setItem('cards', JSON.stringify(cards));
-
-        navigation.navigate('CardList');
-    };
+    const handleSubmit = async () => {
+        const [month, year] = formData.expiryDate?.split("/")
+        const result = await createCardToken({
+            name: formData.name,
+            number: formData.number,
+            expiration_month: +month,
+            expiration_year: +year,
+            security_code: +formData.security_code,
+        })
+        if (result?.id && customerData?.id) {
+            const response = await updateCardUser(customerData.id, result.id)
+            if (response) {
+                updateCards?.(response.cards)
+                navigation.navigate('Cards')
+            }
+        }
+    }
 
     return (
         <View style={styles.container}>
             <View style={styles.formContainer}>
-                {AddCardComponents.map((component, index) => <View key={index} style={[styles.inputWrapper, { flexBasis: component.width as DimensionValue || '100%', }]}><Input {...component} /></View >)}
+                {AddCardComponents.map((component, index) => <View key={index} style={[styles.inputWrapper, { flexBasis: component.width as DimensionValue || '100%', }]}><Input {...component} value={formData[component.name]} onChange={(value) => handleFormChange(component.name, value)} /></View >)}
             </View>
             <View style={styles.imagesContainer}>
                 {[require("../assets/verified-by-visa.png"), require("../assets/mastercard-securecode-grey.png"), require("../assets/omise-grey.png"),].map((img, index) => <ImageComponent imageSource={img} key={index} imageStyle={styles.image
                 } />)}
             </View>
-            <Button title="Add Card" onPress={() => navigation.navigate('AddCard')} style={styles.button} />
+            <Button title="Add Card" onPress={handleSubmit} style={styles.button} />
         </View>
     );
 };

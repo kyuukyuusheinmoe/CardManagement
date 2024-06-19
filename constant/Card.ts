@@ -1,10 +1,12 @@
 export const AddCardComponents = [{
-    name: "cardNumber",
+    name: "number",
     label: "ATM/Debit/Credit card number",
     placeholder: "0000 0000 0000 0000",
-    width: "100%"
+    width: "100%",
+    keyboardType: "numeric",
+    format: /(\d{4})(?=\d)/g
 }, {
-    name: "customerName",
+    name: "name",
     label: "Name on Card",
     placeholder: "Ty Lee",
     width: "100%"
@@ -12,9 +14,11 @@ export const AddCardComponents = [{
     name: "expiryDate",
     label: "Expiry date",
     placeholder: "MM/YY",
-    width: "50%"
+    width: "50%",
+    keyboardType: "numeric"
 }, {
-    name: "cvv",
+    name: "security_code",
     label: "CVV",
-    width: "50%"
+    width: "50%",
+    keyboardType: "numeric"
 }]
