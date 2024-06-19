@@ -1,22 +1,15 @@
 import Omise from 'omise-react-native';
-import { OMISE_PUBLIC_KEY, OMISE_SECRET_KEY } from '@env'
+import { OMISE_SECRET_KEY } from '@env'
 
-Omise.config(OMISE_PUBLIC_KEY, OMISE_SECRET_KEY, '2017-11-12');
+Omise.config(OMISE_SECRET_KEY, '2015-11-17');
 
-console.log("xxx OMISE_PUBLIC_KEY, OMISE_SECRET_KEY ", OMISE_PUBLIC_KEY, OMISE_SECRET_KEY)
-
-export const createCustomer = async (email: string) => {
-
-
+export const createCardUser = async (email: string) => {
     try {
-        const data = await Omise.createCustomer({
-            email
-        });
-        console.log('xxx data', JSON.stringify(data));
+        const response = await Omise.createCustomer({ email });
+        return response;
 
     } catch (error) {
-        console.log('xxx error', error);
-
+        return null;
     }
 
 }
