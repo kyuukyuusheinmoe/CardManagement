@@ -1,8 +1,9 @@
-import { FlatList, View, StyleSheet, Text } from "react-native";
+import { FlatList, View, StyleSheet, Text, GestureResponderEvent } from "react-native";
 import CardComponent from '../components/Card';
 import ImageComponent from '../components/Image';
 import { Card } from "../types";
-import { formatCardPrefix } from "../utils";
+import { formatCardPrefix, getRandomAmount } from "../utils";
+import { chargeCustomer } from "../services/customer";
 
 interface CardListContainerProps {
     cards: Card[]
@@ -23,6 +24,18 @@ const CardNumberComponent = ({ last_digits }: { last_digits: string }) => {
 }
 
 const CardListContainer = ({ cards }: CardListContainerProps) => {
+    const handlePress = async (event: GestureResponderEvent, card: Card) => {
+        console.log("xxx handlePress", card)
+        const data = {
+            description: 'some description',
+            amount: getRandomAmount(), // Random amount
+            currency: 'thb',
+            capture: true,
+            card: card.id
+        }
+        const result = await chargeCustomer(data)
+    }
+
     const renderCard = ({ item }: { item: Card }) => (
         <CardComponent header={<ImageComponent imageSource={brandImageMapper[item.brand]} imageStyle={styles.image} />}
             body={<View>
@@ -45,7 +58,8 @@ const CardListContainer = ({ cards }: CardListContainerProps) => {
                         </Text>
                     </View>
                 </View>
-            </View>}>
+            </View>}
+            onPress={(event) => handlePress(event, item)}>
         </CardComponent>
     );
 

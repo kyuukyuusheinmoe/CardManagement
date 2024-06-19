@@ -1,16 +1,16 @@
 import { ReactNode } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, GestureResponderEvent } from 'react-native';
 
 interface CardProps {
     header: ReactNode,
     body: ReactNode
-
+    onPress: (event: GestureResponderEvent) => void
 }
-const Card = ({ header, body }: CardProps) => {
-    return (<View style={styles.card}>
+const CardComponent = ({ header, body, onPress }: CardProps) => {
+    return (<TouchableOpacity style={styles.card} onPress={onPress}><View>
         {header}
         {body}
-    </View>)
+    </View></TouchableOpacity>)
 }
 
 const styles = StyleSheet.create({
@@ -31,4 +31,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Card;
+export default CardComponent;

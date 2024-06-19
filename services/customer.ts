@@ -42,3 +42,22 @@ export const createCardToken = async (card: {
         return null;
     }
 }
+
+export const chargeCustomer = async (data: {
+    description: string,
+    amount: number,
+    currency: string,
+    capture: boolean,
+    card: string
+}) => {
+    Omise.config(OMISE_PUBLIC_KEY, '2015-11-17');
+    try {
+        const response = await Omise.createCharge(data);
+        if (response.paid)
+            console.log('xxx chargeCustomer', JSON.stringify(data));
+        return response;
+
+    } catch (error) {
+        return null;
+    }
+}
