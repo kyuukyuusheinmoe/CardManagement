@@ -4,7 +4,8 @@ export const AddCardComponents = [{
     placeholder: "0000 0000 0000 0000",
     width: "100%",
     keyboardType: "numeric",
-    format: /(\d{4})(?=\d)/g
+    format: /(\d{4})(?=\d)/g,
+    replacement: '$1 '
 }, {
     name: "name",
     label: "Name on Card",
@@ -15,7 +16,9 @@ export const AddCardComponents = [{
     label: "Expiry date",
     placeholder: "MM/YY",
     width: "50%",
-    keyboardType: "numeric"
+    keyboardType: "numeric",
+    format: /^(\d{2})(?!$|\/)/,
+    replacement: '$1/'
 }, {
     name: "security_code",
     label: "CVV",

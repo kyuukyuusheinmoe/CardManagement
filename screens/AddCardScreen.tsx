@@ -44,7 +44,7 @@ const AddCardScreen: React.FC<Props> = ({ navigation }) => {
             const response = await updateCardUser(customerData.id, result.id)
             if (response) {
                 updateCards?.(response.cards)
-                navigation.navigate('Cards')
+                navigation.navigate('Cards' as keyof RootStackParamList)
             }
         }
     }

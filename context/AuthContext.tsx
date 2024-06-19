@@ -29,11 +29,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [])
 
     const updateCards = (cards: { data: Card[] }) => {
-        console.log("xxx updateCards ", cards)
-        setCustomerData((customerData) => {
-            console.log("xxx setCustomerData ", { ...customerData, cards })
-            return ({ ...customerData, cards })
-        })
+        if (customerData) {
+            setCustomerData({ ...customerData, cards })
+        }
     }
 
     return (<AuthContext.Provider value={{ customerData, updateCards }}><View style={styles.layout}>{children}</View></AuthContext.Provider>)
