@@ -3,7 +3,6 @@ import { View, StyleSheet, DimensionValue } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { Card } from '../types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { v4 as uuidv4 } from 'uuid';
 import { AddCardComponents } from '../constant/Card';
 import Input from '../components/Input';
