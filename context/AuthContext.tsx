@@ -3,6 +3,8 @@ import { View, StyleSheet } from "react-native";
 import { createCardUser } from "../services/customer";
 import { Card } from "../types";
 
+// hard coded default email
+const USER_EMAIL = "johndoe@gmail.com"
 interface CustomerDataProps {
     id: string;
     cards: { data: Card[] }
@@ -18,9 +20,10 @@ export const AuthContext = createContext<AuthContextProps>({ customerData: null 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [customerData, setCustomerData] = useState<CustomerDataProps | null>(null)
 
+    //TODO: if the system used the authentication, the user should be ready and no need to create as follows
     useEffect(() => {
         const createUser = async () => {
-            const res = await createCardUser("kyukyusheinmoe97@gmail.com");
+            const res = await createCardUser(USER_EMAIL);
             if (res) {
                 setCustomerData(res)
             }
